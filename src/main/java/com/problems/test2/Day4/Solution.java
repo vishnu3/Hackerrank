@@ -7,77 +7,55 @@ import java.text.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.*;
-//https://www.hackerrank.com/challenges/ctci-array-left-rotation/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays
-
+//https://www.hackerrank.com/challenges/new-year-chaos/problem?isFullScreen=false
 public class Solution {
 
-    // Complete the rotLeft function below.
-    static int[] rotLeft(int[] a, int d) {
-        int[] dummy = new int[a.length];
-        int[] partOne = new int[d];
-        int[] partTwo = new int[a.length-d];
+    // Complete the minimumBribes function below.
+    static String minimumBribes(int[] q) {
 
-        for (int i = 0; i <d ; i++) {
-            partOne[i] = a[i];
+        int ans = 0;
+        for (int i = q.length - 1; i >= 0; i--) {
+            if (q[i] - (i + 1) > 2) {
+                return "Too chaotic";
+                //return;
+            }
+            for (int j = Math.max(0, q[i] - 2); j < i; j++)
+                if (q[j] > q[i]) ans++;
         }
-
-        for (int i = d,j=0; i <a.length; i++,j++) {
-            partTwo[j] = a[i];
-        }
-
-        for (int i = 0; i <partTwo.length ; i++) {
-            dummy[i] = partTwo[i];
-        }
-
-        for (int i = 0; i <partOne.length ; i++) {
-            dummy[partTwo.length+i] = partOne[i];
-        }
-
-        return dummy;
+        return String.valueOf(ans);
 
 
     }
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        File file = new File("C:/VishnuJ/test-projects/test-delete/testout.txt");
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-
-        String[] nd = scanner.nextLine().split(" ");
-
-        int n = Integer.parseInt(nd[0]);
-
-        int d = Integer.parseInt(nd[1]);
-
-        int[] a = new int[n];
-
-        String[] aItems = scanner.nextLine().split(" ");
+    public static void main(String[] args) {
+        int t = scanner.nextInt();
         scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+        List<String> list  =  new ArrayList<>();
 
-        for (int i = 0; i < n; i++) {
-            int aItem = Integer.parseInt(aItems[i]);
-            a[i] = aItem;
-        }
+        for (int tItr = 0; tItr < t; tItr++) {
+            int n = scanner.nextInt();
+            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 
-        int[] result = rotLeft(a, d);
+            int[] q = new int[n];
 
-        System.out.println("result "+result);
+            String[] qItems = scanner.nextLine().split(" ");
+            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 
-        for (int i = 0; i < result.length; i++) {
-            bufferedWriter.write(String.valueOf(result[i]));
-
-            if (i != result.length - 1) {
-                bufferedWriter.write(" ");
+            for (int i = 0; i < n; i++) {
+                int qItem = Integer.parseInt(qItems[i]);
+                q[i] = qItem;
             }
+
+            list.add(minimumBribes(q));
         }
 
-        bufferedWriter.newLine();
-
-        bufferedWriter.close();
+        for (String s:
+             list) {
+            System.out.println(s);
+        }
 
         scanner.close();
     }
 }
-
